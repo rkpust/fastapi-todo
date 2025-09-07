@@ -47,3 +47,19 @@ def get_todo(id: int):
     return {
     "message": "No todo found",
     }
+
+@api.post('/todos')
+def get_todos(todo: dict):
+    new_todo_id = max([todo['id'] for todo in todos]) + 1
+    new_todo = {
+        "id": new_todo_id,
+        "name": todo['name'],
+        "description": todo['description']
+    }
+
+    todos.append(new_todo)
+
+    return {
+        "message": f"A new todo is created successfully",
+        "todo": new_todo
+        }
