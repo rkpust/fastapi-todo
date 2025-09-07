@@ -33,3 +33,17 @@ def get_todos(first_n: int = None, last_n: int = None,):
             "message": "All todo list",
             "todos": todos
             }
+
+# /todos/1
+@api.get('/todos/{id}')
+def get_todo(id: int):
+    for todo in todos:
+        if todo['id'] == id:
+            return {
+                "message": "A todo information",
+                "todo": todo
+                }
+        
+    return {
+    "message": "No todo found",
+    }
