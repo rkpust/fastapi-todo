@@ -79,3 +79,18 @@ def update_todo(id: int, updated_todo: dict):
     return {
         "message": "No todo is found for updating",
         }
+       
+@api.delete('/todos/{id}')
+def delete_todo(id: int):
+    for index, todo in enumerate(todos):
+        if todo['id'] == id:
+            deleted_todo = todos.pop(index)
+
+            return {
+                "message": "A todo is deleted successfully",
+                "todo": deleted_todo
+                }
+
+    return {
+        "message": "No todo is found for deleting",
+        }
