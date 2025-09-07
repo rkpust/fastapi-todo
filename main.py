@@ -63,3 +63,19 @@ def get_todos(todo: dict):
         "message": f"A new todo is created successfully",
         "todo": new_todo
         }
+
+@api.put('/todos/{id}')
+def update_todo(id: int, updated_todo: dict):
+    for todo in todos:
+        if todo['id'] == id:
+            todo['name'] = updated_todo['name']
+            todo['description'] = updated_todo['description']
+
+            return {
+                "message": "A todo is updated successfully",
+                "todo": todo
+                }
+        
+    return {
+        "message": "No todo is found for updating",
+        }
