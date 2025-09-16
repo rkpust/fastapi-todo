@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.responses import JSONResponse
 from typing import List
 from todos import todos, ToDo
 
@@ -27,3 +28,13 @@ def get_todos(first_n: int = None, last_n: int = None,):
     else:
         # /todos
         return todos
+
+# /todos/1
+@api.get('/todos/{id}', response_model=ToDo)
+def get_todo(id: int):
+    for todo in todos:
+        if todo.id == id:
+            return todo
+        
+    # Return a custom error response
+    return JSONResponse(status_code=404, content={"message": "No todo found with the given ID"})
