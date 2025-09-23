@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from typing import List
-from todos import todos, ToDo
+from todos import todos, ToDo, ToDoCreate
 
 api = FastAPI()
 
@@ -38,3 +38,11 @@ def get_todo(id: int):
         
     # Return a custom error response
     return JSONResponse(status_code=404, content={"message": "No todo found with the given ID"})
+
+@api.post('/todos', response_model=ToDo)
+def get_todos(todo: ToDoCreate):
+    new_todo_id = max([todo.id for todo in todos]) + 1
+    new_todo = ToDo(id=new_todo_id, name=todo.name, description=todo.description, priority=todo.priority)
+    todos.append(new_todo)
+
+    return new_todo
