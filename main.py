@@ -1,7 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
-from typing import List
-from todos import todos, ToDo, ToDoCreate
+from typing import List, Optional
+from todos import todos, ToDo, ToDoCreate, ToDoUpdate
 
 api = FastAPI()
 
@@ -46,3 +46,20 @@ def get_todos(todo: ToDoCreate):
     todos.append(new_todo)
 
     return new_todo
+
+@api.put('/todos/{id}', response_model=ToDo)
+def update_todo(id: int, updated_todo: Optional[ToDoUpdate]):
+    for todo in todos:
+        if todo.id == id:
+            if updated_todo.name:
+                todo.name = updated_todo.name
+            if updated_todo.description:
+                todo.description = updated_todo.description
+            if updated_todo.priority:
+                todo.priority = updated_todo.priority
+
+            return todo
+
+    # Return a custom error response
+    # return JSONResponse(status_code=404, content={"message": "No todo is found for updating"})  
+    raise HTTPException(status_code=404, detail="No todo is found for updating")
