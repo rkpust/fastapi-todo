@@ -63,3 +63,13 @@ def update_todo(id: int, updated_todo: Optional[ToDoUpdate]):
     # Return a custom error response
     # return JSONResponse(status_code=404, content={"message": "No todo is found for updating"})  
     raise HTTPException(status_code=404, detail="No todo is found for updating")
+
+@api.delete('/todos/{id}', response_model=ToDo)
+def delete_todo(id: int):
+    for index, todo in enumerate(todos):
+        if todo.id == id:
+            deleted_todo = todos.pop(index)
+
+            return deleted_todo
+
+    raise HTTPException(status_code=404, detail={"message": "No todo is found for deleting"})
